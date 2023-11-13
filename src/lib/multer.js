@@ -16,7 +16,7 @@ const generateStorage = (destination) => {
 };
 
 module.exports = {
-  image: multer({
+  Image: multer({
     storage: generateStorage('./public/images'),
     fileFilter: (req, file, callback) => {
       const allowedMimeTypes = ['image/png', 'image/jpg', 'image/jpeg'];
