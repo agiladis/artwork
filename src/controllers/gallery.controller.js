@@ -5,6 +5,9 @@ const prisma = new PrismaClient();
 async function GetAll(req, res) {
   try {
     const artworks = await prisma.artwork.findMany({
+      where: {
+        deletedAt: null,
+      },
       select: {
         id: true,
         title: true,
@@ -28,6 +31,7 @@ async function GetById(req, res) {
     const artwork = await prisma.artwork.findUnique({
       where: {
         id: Number(id),
+        deletedAt: null,
       },
     });
 
@@ -55,6 +59,7 @@ async function Update(req, res) {
     const artwork = await prisma.artwork.findUnique({
       where: {
         id: Number(id),
+        deletedAt: null,
       },
     });
 
@@ -102,6 +107,7 @@ async function SoftDelete(req, res) {
     const artwork = await prisma.artwork.findUnique({
       where: {
         id: Number(id),
+        deletedAt: null,
       },
     });
 
