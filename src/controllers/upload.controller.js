@@ -4,16 +4,16 @@ const ResponseTemplate = require('../helper/response.helper');
 
 async function Upload(req, res) {
   try {
-    const { title, description } = req.body;
-    const { imageUrl } = `${req.protocol}://${req.get('host')}/images/${
+    const { title, description } = JSON.parse(req.body.data);
+    const imageUrl = `${req.protocol}://${req.get('host')}/images/${
       req.file.filename
     }`;
 
     const newImage = await prisma.artwork.create({
       data: {
-        title,
-        description,
-        imageUrl,
+        title: title,
+        description: description,
+        imageUrl: imageUrl,
       },
     });
 
