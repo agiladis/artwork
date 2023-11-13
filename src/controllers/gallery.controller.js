@@ -1,6 +1,5 @@
 const { PrismaClient } = require('@prisma/client');
 const ResponseTemplate = require('../helper/response.helper');
-const { param } = require('../routes/v1/route');
 const prisma = new PrismaClient();
 
 async function GetAll(req, res) {
@@ -86,4 +85,46 @@ async function Update(req, res) {
   }
 }
 
-module.exports = { GetAll, GetById, Update };
+// soft delete middleware
+prisma.$use(async (params, next) => {
+  if (params.model === 'Artwork' && params.action === 'delete') {
+    params.action = 'update';
+    params.args['data'] = { deletedAt: new Date() };
+  }
+
+  return next(params);
+});
+
+async function SoftDelete(req, res) {
+  const { id } = req.params;
+
+  try {
+    const artwork = await prisma.artwork.findUnique({
+      where: {
+        id: Number(id),
+      },
+    });
+
+    if (!artwork) {
+      return res
+        .status(404)
+        .json(
+          ResponseTemplate(artwork, "the artwork doesn't exist", null, 404)
+        );
+    }
+
+    const deletedArtwork = await prisma.artwork.delete({
+      where: { id: Number(id) },
+    });
+
+    res
+      .status(200)
+      .json(ResponseTemplate(deletedArtwork, 'the artwork deleted', null, 200));
+  } catch (error) {
+    return res
+      .status(500)
+      .json(ResponseTemplate(null, 'internal server error', error, 500));
+  }
+}
+
+module.exports = { GetAll, GetById, Update, SoftDelete };
