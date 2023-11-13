@@ -24,3 +24,5 @@ async function Upload(req, res) {
       .json(ResponseTemplate(null, 'internal server error', error, 500));
   }
 }
+
+module.exports = Upload;
