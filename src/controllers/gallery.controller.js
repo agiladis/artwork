@@ -48,4 +48,42 @@ async function GetById(req, res) {
   }
 }
 
-module.exports = { GetAll, GetById };
+async function Update(req, res) {
+  const { id } = req.params;
+  const { title, description } = req.body;
+
+  try {
+    const artwork = await prisma.artwork.findUnique({
+      where: {
+        id: Number(id),
+      },
+    });
+
+    if (!artwork) {
+      return res
+        .status(404)
+        .json(
+          ResponseTemplate(artwork, "the artwork doesn't exist", null, 404)
+        );
+    }
+
+    const updatedArtwork = await prisma.artwork.update({
+      where: { id: Number(id) },
+      data: {
+        title: title,
+        description: description,
+        updatedAt: new Date(),
+      },
+    });
+
+    res
+      .status(200)
+      .json(ResponseTemplate(updatedArtwork, 'success', null, 200));
+  } catch (error) {
+    return res
+      .status(500)
+      .json(ResponseTemplate(null, 'internal server error', error, 500));
+  }
+}
+
+module.exports = { GetAll, GetById, Update };
