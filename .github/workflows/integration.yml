@@ -25,6 +25,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
-      - run: npm i
-      - run: npx prisma migrate deploy
+      - run: npm install -g bats
+      - run: bats -v
+      # - run: npx prisma migrate deploy
       - run: npm run start
