@@ -38,15 +38,26 @@ async function GetById(req, res) {
     const artwork = await prisma.artwork.findUnique({
       where: {
         id: Number(id),
-        deletedAt: null,
+        // deletedAt: null,
       },
     });
 
     if (!artwork) {
       return res
         .status(404)
+        .json(ResponseTemplate(null, 'the artwork was not found', null, 404));
+    }
+
+    if (artwork.deletedAt != null) {
+      return res
+        .status(200)
         .json(
-          ResponseTemplate(artwork, 'the artwork was not found', null, 404)
+          ResponseTemplate(
+            artwork.deletedAt,
+            'the artwork has been deleted',
+            null,
+            200
+          )
         );
     }
 
