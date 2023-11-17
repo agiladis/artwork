@@ -29,6 +29,12 @@ async function GetById(req, res) {
   const { id } = req.params;
 
   try {
+    if (isNaN(Number(id))) {
+      return res
+        .status(400)
+        .json(ResponseTemplate(null, 'params must be number', null, 400));
+    }
+
     const artwork = await prisma.artwork.findUnique({
       where: {
         id: Number(id),
