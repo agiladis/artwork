@@ -2,30 +2,16 @@
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
 
 name: Integration
-
-on:
-  push:
-    branches: ['main']
-  pull_request:
-    branches: ['main']
-
+run-name: ${{github.actor}} trying ci/cd
+on: [push]
 jobs:
-  build:
+  check-bats-version:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [14.x, 16.x, 18.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
     steps:
       - uses: actions/checkout@v3
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+      - uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'npm'
+          node-version: '16'
       - run: npm install -g bats
       - run: bats -v
-      # - run: npx prisma migrate deploy
-      - run: npm run start
+      - run: npm run test
