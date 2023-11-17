@@ -85,7 +85,7 @@ async function Update(req, res) {
       return res
         .status(404)
         .json(
-          ResponseTemplate(artwork, "the artwork doesn't exist", null, 404)
+          ResponseTemplate(null, "the artwork doesn't exist", null, 404)
         );
     }
 
@@ -95,6 +95,13 @@ async function Update(req, res) {
         title: title,
         description: description,
         updatedAt: new Date(),
+      },
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        imageUrl: true,
+        updatedAt: true,
       },
     });
 
