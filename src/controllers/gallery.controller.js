@@ -149,9 +149,7 @@ async function SoftDelete(req, res) {
     if (!artwork) {
       return res
         .status(404)
-        .json(
-          ResponseTemplate(artwork, "the artwork doesn't exist", null, 404)
-        );
+        .json(ResponseTemplate(null, "the artwork doesn't exist", null, 404));
     }
 
     const deletedArtwork = await prisma.artwork.delete({
@@ -160,7 +158,7 @@ async function SoftDelete(req, res) {
 
     res
       .status(200)
-      .json(ResponseTemplate(deletedArtwork, 'the artwork deleted', null, 200));
+      .json(ResponseTemplate(null, 'the artwork deleted', null, 200));
   } catch (error) {
     return res
       .status(500)
