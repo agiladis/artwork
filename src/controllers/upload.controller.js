@@ -6,10 +6,11 @@ const imagekit = require('../lib/imagekit');
 async function Upload(req, res) {
   try {
     const { title, description } = JSON.parse(req.body.data);
+    const file = req.file;
 
     const uploadFile = await imagekit.upload({
-      fileName: req.file.originalname,
-      file: stringFile,
+      fileName: file.originalname,
+      file: file.buffer.toString('base64'),
     });
 
     const newImage = await prisma.artwork.create({
