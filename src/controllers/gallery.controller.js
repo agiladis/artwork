@@ -12,6 +12,7 @@ async function GetAll(req, res) {
         id: true,
         title: true,
         description: true,
+        imageUrl: true,
         createdAt: true,
       },
     });
