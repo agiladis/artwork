@@ -74,6 +74,12 @@ async function Update(req, res) {
   const { title, description } = req.body;
 
   try {
+    if (isNaN(Number(id))) {
+      return res
+        .status(400)
+        .json(ResponseTemplate(null, 'params must be number', null, 400));
+    }
+
     const artwork = await prisma.artwork.findUnique({
       where: {
         id: Number(id),
@@ -84,9 +90,7 @@ async function Update(req, res) {
     if (!artwork) {
       return res
         .status(404)
-        .json(
-          ResponseTemplate(null, "the artwork doesn't exist", null, 404)
-        );
+        .json(ResponseTemplate(null, "the artwork doesn't exist", null, 404));
     }
 
     const updatedArtwork = await prisma.artwork.update({
@@ -129,6 +133,12 @@ async function SoftDelete(req, res) {
   const { id } = req.params;
 
   try {
+    if (isNaN(Number(id))) {
+      return res
+        .status(400)
+        .json(ResponseTemplate(null, 'params must be number', null, 400));
+    }
+
     const artwork = await prisma.artwork.findUnique({
       where: {
         id: Number(id),
