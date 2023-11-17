@@ -1,19 +1,23 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 const ResponseTemplate = require('../helper/response.helper');
+const imagekit = require('../lib/imagekit');
 
 async function Upload(req, res) {
   try {
     const { title, description } = JSON.parse(req.body.data);
-    const imageUrl = `${req.protocol}://${req.get('host')}/images/${
-      req.file.filename
-    }`;
+    const file = req.file;
+
+    const uploadFile = await imagekit.upload({
+      fileName: file.originalname,
+      file: file.buffer.toString('base64'),
+    });
 
     const newImage = await prisma.artwork.create({
       data: {
         title: title,
         description: description,
-        imageUrl: imageUrl,
+        imageUrl: uploadFile.url,
       },
     });
 
