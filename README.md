@@ -1,5 +1,8 @@
 # artwork
 
+This app is already on air
+[![Visit](https://railway.app/button.svg)](https://artwork-production.up.railway.app/)
+
 ## API endpoint
 
 to create new gallery, use form-data type on postman. with 2 keys:
