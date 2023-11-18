@@ -1,6 +1,6 @@
 # artwork
 
-This app is already on air
+This app is already on air --> `artwork-production.up.railway.app`
 
 [![Visit](https://railway.app/button.svg)](https://artwork-production.up.railway.app/)
 
