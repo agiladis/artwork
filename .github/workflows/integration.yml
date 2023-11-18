@@ -3,7 +3,10 @@
 
 name: Integration
 run-name: ${{github.actor}} trying ci/cd
-on: [push]
+on:
+  push:
+    branches:
+      - main
 jobs:
   check-bats-version:
     runs-on: ubuntu-latest
@@ -15,4 +18,3 @@ jobs:
       - run: npm install
       - run: npm install -g bats
       - run: bats -v
-      - run: npm run start
